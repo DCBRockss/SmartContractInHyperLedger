@@ -36,15 +36,17 @@ fabric-samples/chaincode/supplychain/java/
 └── src/main/java/org/supplychain/
     ├── ProductBatch.java
     └── SupplyChainContract.java
-
+```
 ---    
 
 ## 4. Phase 1: Network Initialization & Deployment
 Navigate to the test-network control directory and clean any stale Docker containers, then boot the foundation (Org1 & Org2) and deploy the compiled Java smart contract.
-
+# or
+```shell
 cd fabric-samples/test-network
 
 # 1. Nuke stale environments and clear Docker volumes
+
 ./network.sh down
 docker network prune -f
 docker volume prune -f
@@ -54,7 +56,7 @@ docker volume prune -f
 
 # 3. Compile, package, and deploy the Java Chaincode
 ./network.sh deployCC -ccn supplychain -ccp ../chaincode/supplychain/java -ccl java -c supplychannel
-
+```
 Note: Wait for the output: Chaincode definition committed on channel 'supplychannel' before proceeding.
 
 ---
