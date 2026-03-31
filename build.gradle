@@ -1,0 +1,26 @@
+plugins {
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group 'org.supplychain'
+version '1.0.0'
+
+dependencies {
+    implementation 'org.hyperledger.fabric-chaincode-java:fabric-chaincode-shim:2.5.+'
+    implementation 'com.owlike:genson:1.6'
+}
+
+repositories {
+    mavenCentral()
+}
+
+application {
+    mainClass = 'org.hyperledger.fabric.contract.ContractRouter'
+}
+
+shadowJar {
+    archiveBaseName.set('chaincode')
+    archiveVersion.set('')
+    archiveClassifier.set('')
+}
