@@ -36,7 +36,9 @@ fabric-samples/chaincode/supplychain/java/
 └── src/main/java/org/supplychain/
     ├── ProductBatch.java
     └── SupplyChainContract.java
-    
+
+---    
+
 ## 4. Phase 1: Network Initialization & Deployment
 Navigate to the test-network control directory and clean any stale Docker containers, then boot the foundation (Org1 & Org2) and deploy the compiled Java smart contract.
 
@@ -54,6 +56,8 @@ docker volume prune -f
 ./network.sh deployCC -ccn supplychain -ccp ../chaincode/supplychain/java -ccl java -c supplychannel
 
 Note: Wait for the output: Chaincode definition committed on channel 'supplychannel' before proceeding.
+
+---
 
 ## 5. Phase 2: Injecting the Retailer (Org3)
 The assignment requires a 3-node network. We dynamically inject Org3 into the live channel.
@@ -83,6 +87,8 @@ export CORE_PEER_MSPCONFIGPATH=${PWD}/organizations/peerOrganizations/[org3.exam
 export CORE_PEER_ADDRESS=localhost:11051
 
 peer channel join -b channel-artifacts/supplychannel.block
+
+---
 
 ## 6. Phase 3: Executing the Supply Chain State Machine
 To test the access control and state transitions, execute the following commands using the specific identities.
@@ -117,6 +123,8 @@ export CORE_PEER_ADDRESS=localhost:11051
 
 peer chaincode invoke -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com --tls --cafile ${PWD}/organizations/ordererOrganizations/[example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem](https://example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem) -C supplychannel -n supplychain --peerAddresses localhost:7051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/[org1.example.com/peers/peer0.org1.example.com/tls/ca.crt](https://org1.example.com/peers/peer0.org1.example.com/tls/ca.crt) --peerAddresses localhost:9051 --tlsRootCertFiles ${PWD}/organizations/peerOrganizations/[org2.example.com/peers/peer0.org2.example.com/tls/ca.crt](https://org2.example.com/peers/peer0.org2.example.com/tls/ca.crt) -c '{"function":"confirmDelivery","Args":["BATCH_1001"]}'
 
+---
+
 ## 7. Final Audit & Verification
 To prove the complete execution of the assignment, pull the product history from the ledger. This utilizes the GetHistoryForKey API to return a timestamped array of all state modifications.
 
@@ -130,6 +138,8 @@ export CORE_PEER_ADDRESS=localhost:7051
 peer chaincode query -C supplychannel -n supplychain -c '{"function":"getProductHistory","Args":["BATCH_1001"]}'
 
 Expected Output: A 3-part JSON array showing sequential state changes (CREATED -> IN_TRANSIT -> DELIVERED) with unique TxIDs and timestamps.
+
+---
 
 ## 8. Network Teardown
 To safely halt the network and release resources:
